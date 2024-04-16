@@ -1,18 +1,12 @@
 from marshmallow import Schema, fields
 
 
-class ItemSchema(Schema):
-    id = fields.Str(dump_only=True)
+class AboutMeSchema(Schema):
     name = fields.Str(required=True)
-    price = fields.Float(required=True)
-    store_id = fields.Str(required=True)
+    profession = fields.Str(required=True)
+    description = fields.Str(required=True)
 
 
-class ItemUpdate(Schema):
-    name = fields.Str()
-    price = fields.Float()
-
-
-class StoreSchema(Schema):
-    id = fields.Str(dump_only=True)
-    name = fields.Str(required=True)
+class CustomerSchema(Schema):
+    customer_email = fields.Email()
+    customer_phone = fields.Str()

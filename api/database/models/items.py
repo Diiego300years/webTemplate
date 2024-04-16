@@ -1,22 +1,29 @@
 # db file
 
-stores = {
+collected_data = {
     1: {
-        "store": "Chair",
-        "price": 17.90
+        "customer_email": "email_concat",
+        "email": "marcin.buczakk@gmail.com",
     },
     2: {
-        "name": "Table",
-        "price": 190.50
+        "customer_phone": "phone_number",
+        "number": 798380737
     }
 }
-items = {
+
+about_me = {
     1: {
-        "name": "Chair",
-        "price": 17.90
+        "description": "email_concat",
+        "email": "marcin.buczakk@gmail.com",
     },
     2: {
-        "name": "Table",
-        "price": 190.50
+        "description": "phone_number",
+        "number": 798380737
+    },
+
+    3: {
+        "name": "Marcin Buczak",
+        "profession": "Programmer",
+        "description": "I love programming <3"
     }
 }
