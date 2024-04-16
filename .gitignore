@@ -1,0 +1,4 @@
+.idea
+venv_website/
+.dockerignore
+__pycache__

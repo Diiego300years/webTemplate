@@ -1,0 +1,16 @@
+//{
+//"Development": {
+//  "FLASK_APP": "api.wsgi.py",
+//  "SQLALCHEMY_DATABASE_URI": "postgresql://postgres:admin@172.17.0.2:5455/myWebsite",
+//  "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+//  "API_TITLE": "myWebsite",
+//  "API_VERSION": "v1",
+//  "OPENAPI_VERSION": "3.0.2",
+//  "OPENAPI_JSON_PATH": "api-spec.json",
+//  "OPENAPI_URL_PREFIX": "/",
+//  "OPENAPI_SWAGGER_UI_PATH": "/swagger-ui",
+//  "OPENAPI_SWAGGER_UI_URL": "https://cdn.jsdelivr.net/npm/swagger-ui-dist/",
+//  "OPENAPI_SWAGGER_UI_VERSION": "3.1.6",
+//  "SECRET_KEY": "xxx"
+//}
+//}
