@@ -1,13 +1,13 @@
 import json
 from flask import Flask
 from flask_smorest import Api
-
+import os
 
 def create_app():
     app = Flask(__name__)
 
     # Load configuration from JSON file
-    with open('/home/diego/pycharmHome/template/api/configuration/development.json', 'r') as config_file:
+    with open(f'{os.path.dirname(__file__)}/configuration/development.json', 'r') as config_file:
         config_data = json.load(config_file)
 
     app.config.update(config_data)
