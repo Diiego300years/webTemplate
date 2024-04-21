@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  web_template:
+    build:
+      context: .  # Context is set up here
+      dockerfile: docker/Dockerfile.dev  # Ścieżka do Dockerfile względem kontekstu
+    ports:
+      - "8000:8000"

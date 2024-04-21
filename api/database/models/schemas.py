@@ -5,6 +5,7 @@ class AboutMeSchema(Schema):
     name = fields.Str(required=True)
     profession = fields.Str(required=True)
     description = fields.Str(required=True)
+    code = fields.Str(required=True)
 
 
 class CustomerSchema(Schema):
