@@ -1,9 +1,21 @@
-version: '3.8'
-
 services:
   web_template:
     build:
       context: .  # Context is set up here
-      dockerfile: docker/Dockerfile.dev  # Ścieżka do Dockerfile względem kontekstu
+      dockerfile: ${DOCKERFILE}  # Ścieżka do Dockerfile względem kontekstu
     ports:
-      - "8000:8000"
+      - ${DOCKER_PORTS}
+    volumes:
+        - .:/usr/src/app  # Montowanie katalogu roboczego
+        - /usr/src/app/__pycache__  # Montowanie katalogu z plikami tymczasowymi
+    command: ["gunicorn", "-c", "/usr/src/app/api/configuration/gunicorn_conf.py", "wsgi:application"]
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DEBUG=1
+#      - SECRET_KEY=secret_key
+      - ALLOWED_HOSTS=*
+#      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+    cpus: 2.2
+    mem_limit: 512m
+    mem_reservation: 500m
+    restart: on-failure

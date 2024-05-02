@@ -4,6 +4,9 @@ from flask import Flask
 from flask_smorest import Api
 import os
 
+from api.database.models.schemas import DefaultErrorSchema
+
+
 def create_app():
     load_dotenv()
     app = Flask(__name__)

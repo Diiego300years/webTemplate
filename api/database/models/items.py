@@ -12,18 +12,8 @@ collected_data = {
 }
 
 about_me = {
-    1: {
-        "description": "email_concat",
-        "email": "marcin.buczakk@gmail.com",
-    },
-    2: {
-        "description": "phone_number",
-        "number": 798380737
-    },
-
-    3: {
-        "name": "Marcin Buczak",
-        "profession": "Programmer",
-        "description": "I love programming <3"
-    }
+    'name': 'Marcin Buczak',
+    'profession': 'Programmer',
+    'description': 'I love programming <3 <3 <3',
+    'code': 1234
 }

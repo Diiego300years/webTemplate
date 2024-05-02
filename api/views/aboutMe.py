@@ -1,53 +1,42 @@
 import uuid
-from flask import request
+from flask import request, make_response
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from api.database.models.items import about_me
-from api.database.models.schemas import AboutMeSchema
+from api.database.models.schemas import AboutMeSchema, DefaultErrorSchema
 
 # Blueprint in Flask Smorest would divide API in multiple segment
 blp = Blueprint("about_me", __name__, description="Operations on about_me")
 
-#Write write a blueprint function that will return a list of all the values in the about_me dictionary but it has to be safe, with good practice headers, and evertyhing you need on production in Flask
 
 @blp.route("/about_me") # This is a decorator that will add a route to the blueprint
 class AboutMeValues(MethodView):
 
-    @blp.response(200, AboutMeSchema)
-    @blp.arguments(AboutMeSchema, location="json")
-    @blp.doc(description="Get all about_me values")
+    @blp.response(200, schema=AboutMeSchema(many=False), )
+    @blp.doc(description="Get all about_me values", summary="Shows all about_me values")
     @blp.doc(responses={
         400: {"description": "Bad Request"},
         401: {"description": "Unauthorized"},
         403: {"description": "Forbidden"},
-        404: {"description": "Item not found i trudno bym powieedział"},
         500: {"description": "Internal Server Error"}
     })
     def get(self):
         # example function to fetch data
-        about_me_data = about_me.values()
-        if not about_me_data:
-            abort(404, message="Item not found")
-        return {"collected_data": about_me_data}
-@blp.route("/about_me") # This is a decorator that will add a route to the blueprint
-class AboutMeValues(MethodView):
+        schema = AboutMeSchema(many=False)
+        about_me_data = schema.dump(about_me)
+        # about_me_data = False
 
-    @blp.response(200, AboutMeSchema)
-    @blp.arguments(AboutMeSchema, location="json")
-    @blp.doc(description="Get all about_me values")
-    @blp.doc(responses={
-        400: {"description": "Bad Request"},
-        401: {"description": "Unauthorized"},
-        403: {"description": "Forbidden"},
-        404: {"description": "Item not found i trudno bym powieedział"},
-        500: {"description": "Internal Server Error"}
-    })
-    def get(self):
-        # example function to fetch data
-        about_me_data = about_me.values()
         if not about_me_data:
-            abort(404, message="Item not found")
-        return {"collected_data": about_me_data}
+            abort(404)
+
+        response = make_response(about_me_data)
+        response.headers["Cache-Control"] = "no-store"
+        return response
+
+    @blp.errorhandler(404)
+    def handle_404_error(err):
+        schema = DefaultErrorSchema()
+        return schema.dump({'message': 'Page not working', 'code': 404, 'status': 'NOT FOUND', 'errors': {"error": err}}), 404
 
 
     def post(self) -> dict|tuple:
@@ -88,13 +77,13 @@ class AboutMeValues(MethodView):
 
 
 
-@blp.route("/about_me/<int:item_id>")
-class AboutMe(MethodView):
-    def get(self, item_id: int) -> dict or abort(404):
-        try:
-            return about_me[item_id]
-        except KeyError:
-            abort(404, message="Item not found")
-
-
+# @blp.route("/about_me/<int:item_id>")
+# class AboutMe(MethodView):
+#     def get(self, item_id: int) -> dict or abort(404):
+#         try:
+#             return about_me[item_id]
+#         except KeyError:
+#             abort(404, message="Item not found")
+#
+#
 

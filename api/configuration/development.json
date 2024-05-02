@@ -2,6 +2,7 @@
     "PROPAGATE_EXCEPTIONS": true,
     "API_TITLE": "Stores REST API",
     "API_VERSION": "v1",
+    "Debug": true,
     "OPENAPI_VERSION": "3.0.3",
     "OPENAPI_URL_PREFIX": "/",
     "OPENAPI_SWAGGER_UI_PATH": "/swagger-ui",

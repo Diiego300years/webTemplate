@@ -1,47 +1,47 @@
 import os
-#
-wsgi_app = "api.wsgi:app"
-#
-# ## For Flask-SocketIO should be only 1 worker
-# workers = int(os.environ.get('GUNICORN_PROCESSES', '1'))
+
+from dotenv import load_dotenv
+
+dotenv_path = ".env"
+dontenv_prod_path = ".env.prod"
+
+# load_dotenv(dotenv_path=dontenv_prod_path)
+load_dotenv(dotenv_path=dotenv_path)
+
+wsgi_app = os.getenv("GUNICORN_APP")
 
 
+# # Info is not the most important. For future maybe 2 handlers or sth
+loglevel = os.getenv('GUNICORN_LOG_LEVEL')
+
+
+# # Binding port 5000
+bind = os.getenv('GUNICORN_BIND')
+
+# # Only localhost for now, in future * for all ips
+forwarded_allow_ips = os.getenv('GUNICORN_FORWARDED_ALLOW_IPS')
+proxy_allow_ips = os.getenv('GUNICORN_PROXY_ALLOW_IPS')
+
+
+# For Flask-SocketIO should be only 1 worker
+workers = int(os.environ.get('GUNICORN_WORKERS'))
 
 # # With this could be fun giving more and more xD
 # threads = int(os.environ.get('GUNICORN_THREADS', '4'))
 #
 # timeout = int(os.environ.get('GUNICORN_TIMEOUT', '120'))
 #
-# # Binding port 5000
-bind = os.environ.get('GUNICORN_BIND', '0.0.0.0:8000')
-#
-# # Only localhost for now, in future * for all ips
-forwarded_allow_ips = '*'
-proxy_allow_ips = '*'
+
 
 # # # What should headers have
 
-reload = True
+reload = os.getenv('GUNICORN_RELOAD')
+
+# # Optional ssl, for prod must 2 == require, for now optional
+cert_reqs = os.getenv('GUNICORN_CERT_REQS')
 
 # timeout = 120
 # keepalive = 25
-
-# secure_scheme_headers = {
-#             'X-Forwarded-Proto': 'https',
-#             'X-Forwarded-SSL': 'on',
-#             'X-Forwarded-PROTOCOL': 'ssl',
-#             'Access-Control-Allow-Origin': '*',
-#             'Access-Control-Allow-Credentials': 'true',
-# }
-
-# # Info is not the most important. For future maybe 2 handlers or sth
-loglevel = "debug"
-#
-# # Optional ssl, for prod must 2 == require, for now optional
-cert_reqs = 0
-#
-# # reload worker if there's code change
-# # reload = 'auto' maybe in future, for now debbuger and volumins should provide it
 
 # Set True if you want to see if config is okay. Return 0 mean it's okay
 # check_config = False
@@ -49,12 +49,18 @@ cert_reqs = 0
 # Better visualization
 # print_config = True
 #
-accesslog = '-'
-#
-access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+accesslog = os.getenv('GUNICORN_ACCESS_LOG')
+access_log_format = os.getenv('GUNICORN_LOG_FORMAT')
 
-# certfile = '/app/127.0.0.1.pem'
-# keyfile = '/app/127.0.0.1-key.pem'
-cors_allowed_origins = '*'
+# certfile = os.getenv('GUNICORN_SSL_CERTFILE')
+# keyfile = os.getenv('GUNICORN_SSL_KEYFILE')
 
-access_control_allow_credentials = False
+cors_allowed_origins = os.getenv('GUNICORN_CORS_ALLOWED_ORIGINS')
+
+secure_scheme_headers = {
+    'X-Forwarded-Proto': os.getenv('GUNICORN_PROXY_FORWARDED_PROTO'),
+    'X-Forwarded-SSL': os.getenv('X-FORWARDED-SSL'),
+    'X-Forwarded-PROTOCOL': os.getenv('X-FORWARDED-PROTOCOL'),
+    'Access-Control-Allow-Origin': os.getenv('ACCESS-CONTROL-ALLOW-ORIGIN'),
+    'Access-Control-Allow-Credentials': os.getenv('ACCESS-CONTROL-ALLOW-CREDENTIALS')
+}

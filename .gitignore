@@ -3,3 +3,5 @@ venv_website/
 .dockerignore
 __pycache__
 .env
+.env-prod
+.env-testing

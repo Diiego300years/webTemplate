@@ -1,12 +1,15 @@
 FROM python:3.10-slim
 
+# Ustawienie katalogu roboczego
 WORKDIR /usr/src/app
 
-
-COPY requirements.txt /usr/src/app
-
+# Skopiowanie tylko pliku requirements.txt i instalacja zależności
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Skopiowanie pozostałych plików aplikacji
 COPY . .
 
-CMD ["gunicorn", "-c", "/usr/src/app/api/configuration/gunicorn_conf.py", "wsgi:application"]
+# Dodanie nowego użytkownika 'appuser' i przełączenie na niego
+RUN useradd -m appuser
+USER appuser
