@@ -3,17 +3,18 @@ from flask import request, make_response
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from api.database.models.items import about_me
-from api.database.models.schemas import AboutMeSchema, DefaultErrorSchema
+from api.database.models.schemas import AboutMeSchema, DefaultErrorSchema, IntegerInputSchema
 
 # Blueprint in Flask Smorest would divide API in multiple segment
-blp = Blueprint("about_me", __name__, description="Operations on about_me")
+blp = Blueprint("about_me", __name__, description="Operations on about_me, this text is added in blp=Blueprint()")
 
 
 @blp.route("/about_me") # This is a decorator that will add a route to the blueprint
 class AboutMeValues(MethodView):
 
     @blp.response(200, schema=AboutMeSchema(many=False), )
-    @blp.doc(description="Get all about_me values", summary="Shows all about_me values")
+    @blp.doc(description="There should be option for read more, and check more of my photos.",
+             summary="Shows all about_me values")
     @blp.doc(responses={
         400: {"description": "Bad Request"},
         401: {"description": "Unauthorized"},
@@ -29,21 +30,35 @@ class AboutMeValues(MethodView):
         if not about_me_data:
             abort(404)
 
-        response = make_response(about_me_data)
+        response = make_response(about_me_data, 200)
         response.headers["Cache-Control"] = "no-store"
         return response
 
     @blp.errorhandler(404)
     def handle_404_error(err):
         schema = DefaultErrorSchema()
-        return schema.dump({'message': 'Page not working', 'code': 404, 'status': 'NOT FOUND', 'errors': {"error": err}}), 404
+        return schema.dump({'code': 404,
+                            'message': "Work in progress, please come back later",
+                            'errors': {"my_error": err},
+                            'status': 'NOT FOUND'}), 404
 
-
-    def post(self) -> dict|tuple:
-        data = request.json
+    @blp.arguments(IntegerInputSchema)
+    @blp.response(201, schema=AboutMeSchema(many=False), )
+    @blp.doc(description="There should be option for copy email and phone number also.",
+             summary="Adding new photos to my page. For now it's integer")
+    @blp.doc(responses={
+        400: {"description": "Bad Request"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        500: {"description": "Internal Server Error"}
+    })
+    def post(self, data) -> dict|tuple:
         item_id = str(uuid.uuid4())
-        about_me[item_id] = data
-        return {"item_id": item_id}, 201
+        about_me[item_id] = data['value']
+        response_data = {"item_id": item_id, "added_value": data['value']}
+        response = make_response(response_data, 201)
+        response.headers['content-type'] = 'application/json'
+        return response
 
     def put(self) -> dict:
         data = request.json

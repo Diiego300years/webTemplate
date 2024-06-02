@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields
+from marshmallow.validate import Range
 
 
 class AboutMeSchema(Schema):
@@ -20,3 +21,6 @@ class DefaultErrorSchema(Schema):
     errors = fields.Dict(keys=fields.Str(), values=fields.Str())
 
 # make scgema for customer data with concact email and phone number
+
+class IntegerInputSchema(Schema):
+    value = fields.Integer(required=True, validate=Range(min=0))  # przykład z minimalną wartością 0
